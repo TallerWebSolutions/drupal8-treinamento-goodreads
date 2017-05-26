@@ -1,0 +1,5 @@
+name: Good Reads Integration
+type: module
+description: Good Reads Integration module.
+core: 8.x
+package: Good Reads

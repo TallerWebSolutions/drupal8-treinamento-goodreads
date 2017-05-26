@@ -1,0 +1,5 @@
+services:
+  goodreads.client:
+    class: Drupal\goodreads\GoodReadsClientService
+    arguments: []
+
