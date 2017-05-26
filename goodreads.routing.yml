@@ -1,0 +1,9 @@
+
+goodreads.import_book_form:
+  path: '/goodreads/import-book'
+  defaults:
+    _form: '\Drupal\goodreads\Form\ImportBookGoodReadsForm'
+    _title: 'Importar um Livro do Good Reads'
+  requirements:
+    _access: 'TRUE'
+  
