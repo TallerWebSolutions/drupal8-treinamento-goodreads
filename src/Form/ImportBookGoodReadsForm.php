@@ -53,6 +53,7 @@ class ImportBookGoodReadsForm extends FormBase {
       '#title' => $this->t('Codigo ISBN'),
       '#maxlength' => 20,
       '#size' => 64,
+      '#required' => TRUE,
     ];
 
     $form['submit'] = [
@@ -67,18 +68,29 @@ class ImportBookGoodReadsForm extends FormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+
     parent::validateForm($form, $form_state);
+
+    // Find Book.
+    try {
+      $response = $this->goodreadsClient->getBookByISBN($form_state->getValue('isbn'));
+    }
+    catch (\Exception $exception) {
+      return $form_state->setErrorByName('isbn', $this->t('Livro não encontrado.'));
+    }
+
+    $form_state->setStorage(['book' => $response->book]);
   }
 
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // Display result.
-    foreach ($form_state->getValues() as $key => $value) {
-      drupal_set_message($key . ': ' . $value);
-    }
+    $storage = $form_state->getStorage();
 
+    $title = $storage['book']->title;
+
+    drupal_set_message($this->t('Achamos o livro: %title', ['%title' => $title]));
   }
 
 }
